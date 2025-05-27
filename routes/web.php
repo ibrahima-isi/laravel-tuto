@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -42,6 +43,14 @@ Route::get('/custom-url/{slug}-{id}', function(string $slug, string $id){
 // Grouper des routes et definir un nom commun de base
 Route::prefix('/articles')->name('articles.')->group(function(){
     Route::get('/', function(){
+        $post = new Post();
+        // $post->title = "Mon article";
+        // $post->slug = "mon-second-article";
+        // $post->content = "le contenu";
+        // $post->save();
+
+        return $post->all(['id', 'title']);
+
         return [
             'path' => '/articles',
             'name' => 'articles.index',
