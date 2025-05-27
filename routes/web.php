@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -19,7 +20,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// creation d'une route et utilisation de la class Request pour reuperer les données envoyés par la requete
+// creation d'une route et utilisation de la class Request pour recuperer les données envoyés par la requete
 // Class Request remplace les Super Variable $_GET $_POST ... de php native
 Route::get('/hello-world', function(Request $request){
     $param = $request->path();
@@ -70,4 +71,11 @@ Route::prefix('/articles')->name('articles.')->group(function(){
             'name' => 'articles.update',
         ];
     })->name('update');
+
+    Route::get('/show/{slug}-{id}', [PostController::class, 'show'])
+    ->where([
+        'id' => '^[0-9]+$',
+        'slug' => '[a-zA-Z0-9\-]+',
+    ])
+    ->name('show');
 });
