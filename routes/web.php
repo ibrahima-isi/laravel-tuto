@@ -41,23 +41,23 @@ Route::get('/custom-url/{slug}-{id}', function (string $slug, string $id) {
 ])->name('custom');
 
 // Grouper des routes et definir un nom commun de base
-Route::prefix('/articles')->name('articles.')->group(function () {
+Route::prefix('/articles')->name('articles.')->controller(PostController::class) ->group(function () {
 
-    Route::get('/', 'App\Http\Controllers\PostController@index')->name('index');
+    Route::get('/', 'index')->name('index');
 
-    Route::get('/create', function () {
-        return [
-            'path' => '/articles/create',
-            'name' => 'articles.create',
-        ];
-    })->name('create');
+//    Route::get('/create', function () {
+//        return [
+//            'path' => '/articles/create',
+//            'name' => 'articles.create',
+//        ];
+//    })->name('create');
 
-    Route::get('/update', function () {
-        return [
-            'path' => '/articles/update',
-            'name' => 'articles.update',
-        ];
-    })->name('update');
+//    Route::get('/update', function () {
+//        return [
+//            'path' => '/articles/update',
+//            'name' => 'articles.update',
+//        ];
+//    })->name('update');
 
 //    Route::get('/show/{slug}-{id}', [PostController::class, 'show'])
 //        ->where([
@@ -75,12 +75,17 @@ Route::prefix('/articles')->name('articles.')->group(function () {
 //        ->name('show');
 //    });
     // Customize the search key or field
-    Route::get('/show/{post:slug}', [PostController::class, 'show'])
+    Route::get('/show/{post:slug}','show')
         ->where([
             'id' => '^[0-9]+$',
             'slug' => '[a-zA-Z0-9\-]+',
         ])
         ->name('show');
-    });
 
-// TODO: Data validation and Request class
+    Route::get('/create', 'create')->name('create');
+    Route::post('/store', 'store')->name('store');
+    Route::get('/edit/{post}', 'edit')->name('edit');
+    Route::patch('/update/{post}', 'update')->name('update');
+    Route::delete('/delete/{post}', 'destroy')->name('delete');
+});
+
